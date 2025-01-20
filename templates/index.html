@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toxicity Score Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* Modern and Simplistic Theme */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9; /* Subtle light gray for the background */
+            color: #333;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border-left: 5px solid #008080; /* Teal accent */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            resize: none;
+            background-color: #fefefe;
+            color: #333;
+        }
+
+        textarea:focus {
+            border-color: #008080; /* Teal border on focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 128, 0.3);
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        strong {
+            color: #008080; /* Teal accent for emphasis */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Toxicity Score Analyzer</h1>
+        <textarea id="text-input" placeholder="Enter text here..."></textarea>
+        <button onclick="analyzeText()">Analyze</button>
+        <div id="result">
+            <h2>Results</h2>
+            <ul id="result-list"></ul>
+        </div>
+    </div>
+    <script>
+        async function analyzeText() {
+            const text = document.getElementById('text-input').value;
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            const resultList = document.getElementById('result-list');
+            resultList.innerHTML = ''; // Clear previous results
+            
+            for (const [category, probability] of Object.entries(result.probabilities)) {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${category}: ${probability}%`;
+                resultList.appendChild(listItem);
+            }
+        }
+    </script>
+</body>
+</html>
