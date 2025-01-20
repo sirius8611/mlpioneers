@@ -16,6 +16,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 # Initialize the FastAPI app
 app = FastAPI()
 nltk.download('punkt_tab')
+nltk.download('stopwords')
 #Create vecotrizer   
 def embed(text):
     text_token = word_tokenize(text)
