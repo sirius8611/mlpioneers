@@ -17,8 +17,6 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 app = FastAPI()
 nltk.download('punkt_tab')
 #Create vecotrizer   
-train_data = pd.read_csv("./models/train.csv")
-categories = list(train_data.columns[2:])
 def embed(text):
     text_token = word_tokenize(text)
     
